@@ -6,6 +6,7 @@ import Select from '../ui/Select';
 import Button from '../ui/Button';
 import { getCategories } from '../../api/categories';
 import { createRecurring, updateRecurring } from '../../api/recurring';
+import { toDateInputValue } from '../../utils/format';
 
 const FREQUENCIES = [
   { value: 'daily', label: 'Daily' },
@@ -24,7 +25,7 @@ export default function RecurringForm({ open, onClose, onSuccess, item = null })
     amount: '',
     categoryId: '',
     frequency: 'monthly',
-    startDate: new Date().toISOString().slice(0, 10),
+    startDate: toDateInputValue(),
     endDate: '',
     notes: '',
     isActive: true,
@@ -49,7 +50,7 @@ export default function RecurringForm({ open, onClose, onSuccess, item = null })
           amount: '',
           categoryId: '',
           frequency: 'monthly',
-          startDate: new Date().toISOString().slice(0, 10),
+          startDate: toDateInputValue(),
           endDate: '',
           notes: '',
           isActive: true,

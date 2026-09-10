@@ -7,7 +7,7 @@ import Spinner from '../components/ui/Spinner';
 import IncomeExpenseChart from '../components/reports/Charts';
 import CategoryPieChart, { TopCategoriesList } from '../components/reports/CategoryPieChart';
 import { getTrends, getCategoryReport, exportCsv } from '../api/reports';
-import { getCurrentMonthYear, monthStartEnd } from '../utils/format';
+import { getCurrentMonthYear, monthStartEnd, toDateInputValue } from '../utils/format';
 
 export default function ReportsPage() {
   const { month, year } = getCurrentMonthYear();
@@ -59,8 +59,8 @@ export default function ReportsPage() {
     setMonths(m);
     const now = new Date();
     const start = new Date(now.getFullYear(), now.getMonth() - m + 1, 1);
-    setStartDate(start.toISOString().slice(0, 10));
-    setEndDate(now.toISOString().slice(0, 10));
+    setStartDate(toDateInputValue(start));
+    setEndDate(toDateInputValue(now));
   };
 
   return (

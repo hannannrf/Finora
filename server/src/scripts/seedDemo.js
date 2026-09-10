@@ -2,6 +2,10 @@ import { pool } from '../config/db.js';
 import { hashPassword } from '../utils/jwt.js';
 import { seedDefaultCategories } from '../utils/seedCategories.js';
 
+// 'YYYY-MM-DD' in local time (toISOString() is UTC and can land on the previous day).
+const toDateString = (d) =>
+  `${d.getFullYear()}-${String(d.getMonth() + 1).padStart(2, '0')}-${String(d.getDate()).padStart(2, '0')}`;
+
 const DEMO_EMAIL = 'demo@financeapp.com';
 const DEMO_PASSWORD = 'Demo1234';
 const DEMO_NAME = 'Hamza Khan';
@@ -230,7 +234,7 @@ export async function seedDemoData() {
     for (const g of goals) {
       const targetDate =
         g.monthsAhead > 0
-          ? new Date(currentYear, now.getMonth() + g.monthsAhead, 1).toISOString().slice(0, 10)
+          ? toDateString(new Date(currentYear, now.getMonth() + g.monthsAhead, 1))
           : null;
       await client.query(
         `INSERT INTO goals (user_id, name, target_amount, current_amount, target_date)
@@ -265,8 +269,8 @@ export async function seedDemoData() {
           r.amount,
           r.type,
           r.notes,
-          start.toISOString().slice(0, 10),
-          next.toISOString().slice(0, 10),
+          toDateString(start),
+          toDateString(next),
         ]
       );
     }

@@ -6,6 +6,7 @@ import Select from '../ui/Select';
 import Button from '../ui/Button';
 import { getCategories } from '../../api/categories';
 import { createTransaction, updateTransaction } from '../../api/transactions';
+import { toDateInputValue } from '../../utils/format';
 
 export default function TransactionForm({ open, onClose, onSuccess, transaction = null }) {
   const isEdit = !!transaction;
@@ -15,7 +16,7 @@ export default function TransactionForm({ open, onClose, onSuccess, transaction 
     type: 'expense',
     amount: '',
     categoryId: '',
-    transactionDate: new Date().toISOString().slice(0, 10),
+    transactionDate: toDateInputValue(),
     notes: '',
   });
 
@@ -34,7 +35,7 @@ export default function TransactionForm({ open, onClose, onSuccess, transaction 
           type: 'expense',
           amount: '',
           categoryId: '',
-          transactionDate: new Date().toISOString().slice(0, 10),
+          transactionDate: toDateInputValue(),
           notes: '',
         });
       }

@@ -9,7 +9,7 @@ import BudgetProgressBar, { SummaryCards } from '../components/budgets/BudgetPro
 import { TransactionListCompact } from '../components/transactions/TransactionRow';
 import { MiniTrendChart } from '../components/reports/Charts';
 import TransactionForm from '../components/transactions/TransactionForm';
-import { formatCurrency, formatMonthYear, getCurrentMonthYear } from '../utils/format';
+import { formatCurrency, formatDate, formatMonthYear, getCurrentMonthYear } from '../utils/format';
 import { useAuth } from '../context/AuthContext';
 import { getSummary, getTrends } from '../api/reports';
 import { getBudgets } from '../api/budgets';
@@ -129,7 +129,7 @@ export default function DashboardPage() {
                 <Card key={g.id}>
                   <p className="font-medium">{g.name}</p>
                   {g.targetDate && (
-                    <p className="text-xs text-slate-400 mb-2">Target: {g.targetDate}</p>
+                    <p className="text-xs text-slate-400 mb-2">Target: {formatDate(g.targetDate)}</p>
                   )}
                   <div className="flex justify-between text-sm mb-1.5">
                     <span className="tabular-nums text-slate-500 dark:text-slate-400">

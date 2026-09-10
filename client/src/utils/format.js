@@ -18,9 +18,28 @@ export function formatCompactCurrency(amount, currency = DEFAULT_CURRENCY) {
   }).format(amount);
 }
 
-export function formatDate(dateStr) {
-  const date = new Date(dateStr + 'T00:00:00');
+// Reads a 'YYYY-MM-DD' date as a local calendar date. Returns null if it can't.
+export function parseDateOnly(value) {
+  if (!value) return null;
+  const [y, m, d] = String(value).slice(0, 10).split('-').map(Number);
+  if (!y || !m || !d) return null;
+  return new Date(y, m - 1, d);
+}
+
+export function formatDate(value) {
+  const date = parseDateOnly(value);
+  if (!date) return '';
   return date.toLocaleDateString('en-GB', { day: 'numeric', month: 'short', year: 'numeric' });
+}
+
+// A date as 'YYYY-MM-DD' in the user's own timezone, for <input type="date">.
+// Don't use toISOString() for this: it's UTC, so in Pakistan it gives
+// yesterday's date between midnight and 5 AM.
+export function toDateInputValue(date = new Date()) {
+  const y = date.getFullYear();
+  const m = String(date.getMonth() + 1).padStart(2, '0');
+  const d = String(date.getDate()).padStart(2, '0');
+  return `${y}-${m}-${d}`;
 }
 
 export function formatMonthYear(month, year) {
