@@ -42,7 +42,7 @@ export async function remove(req, res, next) {
 
 export async function process(req, res, next) {
   try {
-    const result = await recurringService.processDueRecurring(req.userId);
+    const result = await recurringService.processDueRecurring(req.userId, req.body?.today);
     res.json(result);
   } catch (err) {
     next(err);

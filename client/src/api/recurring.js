@@ -1,4 +1,5 @@
 import api from './client.js';
+import { toDateInputValue } from '../utils/format';
 
 export async function getRecurring() {
   const res = await api.get('/recurring');
@@ -20,6 +21,8 @@ export async function deleteRecurring(id) {
 }
 
 export async function processRecurring() {
-  const res = await api.post('/recurring/process');
+  // Send the user's own calendar date. The server runs in UTC, which is still
+  // "yesterday" in Pakistan between midnight and 5 AM.
+  const res = await api.post('/recurring/process', { today: toDateInputValue() });
   return res.data;
 }

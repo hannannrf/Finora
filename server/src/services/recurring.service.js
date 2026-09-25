@@ -136,8 +136,21 @@ export async function deleteRecurring(userId, id) {
   }
 }
 
-export async function processDueRecurring(userId) {
-  const today = new Date().toISOString().slice(0, 10);
+// The server clock is UTC, but "today" should be the user's calendar date
+// (in Pakistan it's already tomorrow from 7 PM UTC). Use the date the client
+// sends, as long as it's within a day of the server's UTC date, since every
+// real timezone is. Anything else falls back to the UTC date.
+function resolveToday(clientToday) {
+  const utcToday = new Date().toISOString().slice(0, 10);
+  if (typeof clientToday !== 'string' || !/^\d{4}-\d{2}-\d{2}$/.test(clientToday)) {
+    return utcToday;
+  }
+  const diffDays = (Date.parse(clientToday) - Date.parse(utcToday)) / 86400000;
+  return Math.abs(diffDays) <= 1 ? clientToday : utcToday;
+}
+
+export async function processDueRecurring(userId, clientToday) {
+  const today = resolveToday(clientToday);
   const due = await query(
     `SELECT * FROM recurring_transactions
      WHERE user_id = $1 AND is_active = true AND next_date <= $2
